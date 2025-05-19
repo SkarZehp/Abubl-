@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tenho uma pergunta...</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Emojis decorativos -->
+  <div class="emoji-decor" style="top:5%; left:10%">💖</div>
+  <div class="emoji-decor" style="top:15%; right:10%">🥺</div>
+  <div class="emoji-decor" style="bottom:20%; left:15%">😍</div>
+  <div class="emoji-decor" style="bottom:5%; right:5%">💘</div>
+  <div class="emoji-decor" style="top:40%; left:30%">💞</div>
+  <div class="emoji-decor" style="top:70%; right:20%">💋</div>
+
+  <!-- Emojis decorativos no lugar das figurinhas -->
+  <div class="sticker" style="top:10%; left:70%">🌸</div>
+  <div class="sticker" style="bottom:10%; left:40%">🌹</div>
+
+  <!-- Conteúdo principal -->
+  <div class="container">
+    <h1>Quer namorar comigo? 😳💖</h1>
+    <div class="buttons">
+      <button class="btn yes">Sim</button>
+      <button class="btn no">Não</button>
+    </div>
+    <p class="response" id="response"></p>
+    <p id="no-response" class="response"></p> <!-- Espaço para as frases do "Não" -->
+  </div>
+
+  <!-- Trilha sonora para quando ela aceitar -->
+  <audio id="acceptMusic" src="accept-sound.mp3"></audio>
+
+  <script>
+    const buttons = document.querySelectorAll('.btn');
+    const response = document.getElementById('response');
+    const noButton = document.querySelector('.no');
+    const yesButton = document.querySelector('.yes');
+    const noResponse = document.getElementById('no-response');
+    const acceptMusic = document.getElementById('acceptMusic');
+    let noClickCount = 0;
+
+    // Frases personalizadas para o botão "Não"
+    const frasesDeNao = [
+      'acho q tu clicou errado',
+      'eai carai, ta apertando não pq',
+      'não existe não aqui não rapaz, só sim'
+    ];
+
+    buttons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        if (e.target === yesButton) {
+          // Toca o som de aceitação
+          acceptMusic.play();
+          
+          // Esconde o botão "Sim"
+          yesButton.style.display = 'none';
+          
+          // Altera o texto para algo maior
+          response.textContent = "Agora sim, de acordo com Gonzaga, estamos namorando 💖";
+          response.style.fontSize = '2rem'; // Aumenta o tamanho do texto
+
+          noResponse.textContent = '';
+        } else if (e.target === noButton) {
+          yesButton.style.transform = 'scale(1.2)';
+          noButton.style.transform = `scale(${0.8 - noClickCount * 0.2})`;
+
+          // Adiciona a frase de acordo com o número de cliques no "Não"
+          if (noClickCount < frasesDeNao.length) {
+            noResponse.textContent = frasesDeNao[noClickCount];
+          }
+
+          noClickCount++;
+
+          // Após 3 cliques, o botão "Não" desaparece
+          if (noClickCount >= frasesDeNao.length) {
+            noButton.style.display = 'none';
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
